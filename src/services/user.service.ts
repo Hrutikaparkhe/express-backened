@@ -37,18 +37,12 @@ const updateUSer = async (user: ICredentials, registeredUser: IUser) => {
 };
 const login = async (email: any, password: any, done: any) => {
   try {
-    console.log("reached");
-    //   // 1. if the user with the email exists
+  
     const user = await userRepo.getOne(email);
-    // console.log('%%%',credentials.email);
-
-    console.log(user);
+     console.log(user);
     if (!user) {
-      // throw an error
-      throw UserResponse[EUserResponse.LOGIN_FAILED];
+       throw UserResponse[EUserResponse.LOGIN_FAILED];
     }
-
-    //   // 2. compare the passwords
     var didMatch = await compare(password, user.get("password") as string);
     if (!didMatch) {
       // throw an error

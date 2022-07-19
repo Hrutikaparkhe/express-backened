@@ -1,8 +1,7 @@
-// import { DataTypes } from "sequelize/types";
 const { DataTypes } = require("sequelize");
 import { compare, compareSync, genSalt } from "bcrypt";
 import postgres from "../../configuration/postgres.connection";
-// import passportLocalSequelize from "passport-local-sequelize";
+import { EUserResponse } from "../responses/user.response";
 
 export const User = postgres.define(
   "Data",
@@ -34,5 +33,5 @@ User.prototype.comparePassword = async function (password: string, cb) {
   console.log(password, this.password);
   var didMatch = await compare(password, this.password);
   console.log(didMatch);
-  return cb(this);
+   return cb(this);
 };

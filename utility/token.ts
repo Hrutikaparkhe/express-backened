@@ -4,4 +4,5 @@ export const getToken = (obj) => {
     delete obj.repeatPaswword
     var token = jwt.sign(obj,'secret')
     console.log("****",token);   
+    return token
 }

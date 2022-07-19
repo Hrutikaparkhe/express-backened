@@ -27,16 +27,4 @@ console.log('>> opts', opts);
       
       }))
     
-
-
-  // passport.serializeUser((user: any, done) => {
-  //   done(null, user.email);
-  // });
-
-  // passport.deserializeUser(async (email: any, done) => {
-  //   // TODO: Fetch user from DB
-  //   const user = await userRepo.getOne(email);
-  //   if (user) done(null, user);
-  //   else done(null, false);
-  // });
 };
