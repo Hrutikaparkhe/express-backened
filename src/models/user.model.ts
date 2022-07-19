@@ -34,4 +34,5 @@ User.prototype.comparePassword = async function (password: string, cb) {
   console.log(password, this.password);
   var didMatch = await compare(password, this.password);
   console.log(didMatch);
+  return cb(this);
 };

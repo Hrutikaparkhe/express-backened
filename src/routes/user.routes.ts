@@ -4,6 +4,8 @@ import passport from "passport";
 import { ResponseHandler } from "../../utility/response-handler";
 import userService from "../services/user.service";
 import { IUser, ICredentials } from "../types/user.types";
+import { getToken } from "../../utility/token";
+import passportJWTConfig from "../../configuration/passportJWT.config";
 const router = Router();
 router.post("/register", async (req, res, next) => {
   try {
@@ -49,7 +51,16 @@ router.delete("/:id", async (req, res, next) => {
 
 router.post(
   "/login",
-  passportConfig(passport).authenticate("local", {
+  passportConfig(passport).authenticate("local", function (err, res) {
+    console.log(">> res", res.dataValues);
+    if (res) {
+      console.log(getToken(res.dataValues));
+    }
+  })
+);
+router.get(
+  "/check",
+  passportJWTConfig(passport).authenticate("jwt", {
     successRedirect: "/user/login",
     failureRedirect: "/user/error",
   })
@@ -66,29 +77,10 @@ router.get("/login", async (req, res, next) => {
 
 router.get("/error", async (req, res, next) => {
   try {
-    res.send({ error: "something went wrong" });
+    res.send({ error: "something went wrong", r: req.headers });
   } catch (error) {
     next(error);
   }
 });
-
-// router.post("/login", function (req, res, next) {
-//   passport.authenticate("local", function (err, user, info) {
-//     console.log(err, user, info);
-//     if (err) {
-//       res.json({ message: err.message });
-//     }
-//     if (!user) {
-//       res.json({ message: info.message });
-//     }
-//     req.logIn(user, function (err) {
-//       if (err) {
-//         res.json({ message: err.message });
-//       } else {
-//         return res.redirect("/");
-//       }
-//     });
-//   })(req, res, next);
-// });
 
 export default router;

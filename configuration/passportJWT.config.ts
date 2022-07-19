@@ -6,25 +6,28 @@ import userRepo from "../src/controllers/user.controller";
 import { User } from "../src/models/user.model";
 import { Model } from "sequelize/types";
 // const { DataTypes } = require("sequelize");
-const LocalStrategy = require("passport-local").Strategy;
+var JwtStrategy = require('passport-jwt').Strategy,
+ExtractJwt = require('passport-jwt').ExtractJwt;
 
 export default (passport: any) => {
+    var opts:{
+        jwtFromRequest?:() =>{},
+        secretOrKey?:string
+    } = {}
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = 'secret';
+console.log('>> opts', opts);
  return  passport.use(
-    new LocalStrategy({usernameField:'email'},function (email: string, password: string, done: any) {
-      console.log("&&",password);
+    new JwtStrategy(opts,function (jwt_payload:any, done: any) {
+      console.log("&&",jwt_payload);
 
-    return  User.findByPk(email).then((user: Model <{comparePassword: (password, cb)=> {}}> ) => {
-        if (!user) {
-          return done(null, false);
-        }
-        (user as any).comparePassword(password, (userData) => {
-          console.log('>> userData', userData);
-          return done(null, userData);
-        })
-        
-      }).catch(err => console.error(err) )
-    })
-  );
+      User.findByPk(jwt_payload.email).then(user =>{
+        console.log('>> user', user);
+      })
+      
+      }))
+    
+
 
   // passport.serializeUser((user: any, done) => {
   //   done(null, user.email);
