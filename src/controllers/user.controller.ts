@@ -16,8 +16,7 @@ const deleteUser = async (id: number) => {
   return result;
 };
 const getOne = async (email: string) => {
-  const user = await User.findOne({ where: { email: email }});
-
+  const user = await User.findOne({ where: { email: email } });
   return user;
 };
 
@@ -26,5 +25,5 @@ export default {
   getUser,
   updateUser,
   deleteUser,
-  getOne
+  getOne,
 };

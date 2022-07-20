@@ -7,7 +7,7 @@ export const User = postgres.define(
   "Data",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER, 
 
       autoIncrement: true,
     },

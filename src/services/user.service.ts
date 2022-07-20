@@ -6,7 +6,7 @@ import { User } from "../models/user.model";
 import { compare, genSalt, hash, hashSync } from "bcrypt";
 import passport from "passport";
 import passportLocal from "passport-local";
-import passportJwt from "passport-jwt";
+import passportJwt from "passport-jwt"; 
 import { genSaltSync } from "bcryptjs";
 
 const create = async (user: IUser) => {

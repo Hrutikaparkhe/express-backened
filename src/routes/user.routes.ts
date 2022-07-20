@@ -50,32 +50,32 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.post(
-  "/login", (req, res) => {
-    passportConfig(passport).authenticate("local", async function (err, userData) {
+router.post("/login", (req, res) => {
+  passportConfig(passport).authenticate(
+    "local",
+    async function (err, userData) {
       console.log(">> res", userData.dataValues);
-      try{
+      try {
         if (userData) {
           console.log(getToken(userData.dataValues));
-          var token = getToken(userData.dataValues)
-          console.log('>> token', token);
-          await res.send({token});
+          var token = getToken(userData.dataValues);
+          console.log(">> token", token);
+          await res.send({ token });
         }
-      }catch(e){
-      await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
+      } catch (e) {
+        await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
       }
       // if (res) {
       //   console.log(getToken(res.dataValues));
       //   await res.send(new ResponseHandler(EUserResponse.LOGIN_SUCCESS));
       // }
-    })(req, res)
-  }
-
-);
+    }
+  )(req, res);
+});
 router.get(
   "/check",
   passportJWTConfig(passport).authenticate("jwt", {
-    successRedirect: "/user/login",
+    successRedirect: "/person/register",
     failureRedirect: "/user/error",
   })
 );
