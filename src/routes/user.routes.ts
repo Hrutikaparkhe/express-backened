@@ -8,6 +8,9 @@ import { getToken } from "../../utility/token";
 import passportJWTConfig from "../../configuration/passportJWT.config";
 import { EUserResponse } from "../responses/user.response";
 const router = Router();
+
+router.get("/check", (req, res) => res.send({ msg: "log in successful" }));
+
 router.post("/register", async (req, res, next) => {
   try {
     const patient = req.body as IUser;
@@ -21,15 +24,15 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
-  try {
-    const user = req.body as IUser;
-    const result = await userService.getUser();
-    res.send(new ResponseHandler(result));
-  } catch (e) {
-    next(e);
-  }
-});
+// router.get("/", async (req, res, next) => {
+//   try {
+//     const user = req.body as IUser;
+//     const result = await userService.getUser();
+//     res.send(new ResponseHandler(result));
+//   } catch (e) {
+//     next(e);
+//   }
+// });
 router.put("/:id", async (req, res, next) => {
   try {
     const user = req.body as ICredentials;
@@ -72,13 +75,20 @@ router.post("/login", (req, res) => {
     }
   )(req, res);
 });
-router.get(
-  "/check",
-  passportJWTConfig(passport).authenticate("jwt", {
-    successRedirect: "/person/register",
-    failureRedirect: "/user/error",
-  })
-);
+
+export const authenticateWithJWT = (req, res, callback) => {
+  return passportJWTConfig(passport).authenticate("jwt", (err, user) => {
+    console.log(">> err", err);
+    console.log(">> user", user);
+    if (err || !user) {
+      res.send({
+        status: 401,
+        message: "Unauthorized Access",
+      });
+    }
+    callback();
+  })(req, res);
+};
 
 // router.get("/login", async (req, res, next) => {
 //   try {

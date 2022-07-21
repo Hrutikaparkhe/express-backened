@@ -1,16 +1,15 @@
 import express, { application } from "express";
 import { connectToPostgres } from "./configuration/postgres.connection";
 import { registerMiddlewares } from "./routes/routes";
-// import { AuthGuard } from "./utility/authourization.middleware";
+import router from "./src/routes/user.routes";
+import authenticateWithJWT from "./src/routes/user.routes";
+
+export const app = express();
 
 export const startServer = async () => {
   try {
-    const app = express();
-    // app.use(AuthGuard(["/user/register"]));
-    // app.use(["/patient"]);
     await connectToPostgres();
     const PORT = process.env.PORT;
-
     registerMiddlewares(app);
     app.listen(PORT, () => {
       console.log(`Server Started at ${PORT}`);

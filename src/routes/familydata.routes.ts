@@ -2,8 +2,8 @@ import familyDataService from "../services/familyData.service";
 import { IfamilyData } from "../types/familyData.types";
 import { ResponseHandler } from "../../utility/response-handler";
 import { Router } from "express";
-const router = Router();
-router.post("/register", async (req, res, next) => {
+const familyrouter = Router();
+familyrouter.post("/registerfamilydata", async (req, res, next) => {
   try {
     const person = req.body as IfamilyData;
     console.log(person);
@@ -14,7 +14,7 @@ router.post("/register", async (req, res, next) => {
     next(e);
   }
 });
-router.get("/", async (req, res, next) => {
+familyrouter.get("/familydata", async (req, res, next) => {
   try {
     const family = req.body as IfamilyData;
     const result = await familyDataService.getFamily();
@@ -23,7 +23,7 @@ router.get("/", async (req, res, next) => {
     next(e);
   }
 });
-router.put("/:id", async (req, res, next) => {
+familyrouter.put("/editfamilydata/:id", async (req, res, next) => {
   try {
     const family = req.body as IfamilyData;
     const registeredUser = req.body as IfamilyData;
@@ -33,7 +33,7 @@ router.put("/:id", async (req, res, next) => {
     next(e);
   }
 });
-router.delete("/:id", async (req, res, next) => {
+familyrouter.delete("/deletefamilydata/:id", async (req, res, next) => {
   try {
     let { id } = req.params;
     const result = await familyDataService.deleteFamily(Number(id));
@@ -42,4 +42,4 @@ router.delete("/:id", async (req, res, next) => {
     next(e);
   }
 });
-export default router;
+export default familyrouter;

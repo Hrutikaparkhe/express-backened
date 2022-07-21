@@ -15,10 +15,13 @@ export default (passport: any) => {
   return passport.use(
     new JwtStrategy(opts, function (jwt_payload: any, done: any) {
       console.log("&&", jwt_payload);
-
+      
       User.findByPk(jwt_payload.email).then((user) => {
-        console.log(">> user", user);
-      });
+        if(user){
+        return  done(null, user)        
+        }
+        return done(true, null)
+      }).catch(err =>{throw err})
     })
   );
 };

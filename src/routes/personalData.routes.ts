@@ -3,8 +3,8 @@ import { PersonalData } from "../models/personalData.model";
 import { IPersonalInfo } from "../types/personalData.types";
 import { Router } from "express";
 import { ResponseHandler } from "../../utility/response-handler";
-const router = Router();
-router.post("/register", async (req, res, next) => {
+const personalRouter = Router();
+personalRouter.post("/registerpersonaldata", async (req, res, next) => {
   try {
     const person = req.body as IPersonalInfo;
     console.log(person);
@@ -16,7 +16,7 @@ router.post("/register", async (req, res, next) => {
     next(e);
   }
 });
-router.get("/", async (req, res, next) => {
+personalRouter.get("/getpersonaldata", async (req, res, next) => {
   try {
     const person = req.body as IPersonalInfo;
     const result = await personalDataService.getPerson();
@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
     next(e);
   }
 });
-router.put("/:id", async (req, res, next) => {
+personalRouter.put("/editpersonaldata/:id", async (req, res, next) => {
   try {
     const person = req.body as IPersonalInfo;
     const registeredUser = req.body as IPersonalInfo;
@@ -35,7 +35,7 @@ router.put("/:id", async (req, res, next) => {
     next(e);
   }
 });
-router.delete("/:id", async (req, res, next) => {
+personalRouter.delete("/deletepersonaldata/:id", async (req, res, next) => {
   try {
     let { id } = req.params;
     const result = await personalDataService.deletePerson(Number(id));
@@ -44,4 +44,4 @@ router.delete("/:id", async (req, res, next) => {
     next(e);
   }
 });
-export default router;
+export default personalRouter;

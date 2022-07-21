@@ -6,7 +6,7 @@ const create = (user: IUser) => {
   return User.create(user);
 };
 
-const getUser = () => User.findAll();
+const getUser = (req, res) => {   res.send({users: User.findAll()}) };
 const updateUser = async (user: ICredentials, registeredUser: IUser) => {
   const result = await User.update(user, { where: { id: user.id } });
   return result;

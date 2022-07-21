@@ -20,9 +20,6 @@ const create = async (user: IUser) => {
     throw UserResponse[EUserResponse.NOT_ACCEPTABLE];
   }
 };
-const getUser = () => {
-  return userRepo.getUser();
-};
 const updateUSer = async (user: ICredentials, registeredUser: IUser) => {
   if (user.password === user.repeatPaswword && !user.email) {
     const salt = await genSalt(10);
@@ -62,7 +59,6 @@ const getToken = (user: any) => {
 const deleteUser = (id: number) => userRepo.deleteUser(id);
 export default {
   create,
-  getUser,
   updateUSer,
   deleteUser,
   login,
