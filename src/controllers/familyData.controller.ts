@@ -1,5 +1,9 @@
 import { IfamilyData } from "../types/familyData.types";
-import { FamilyData } from "../models/familyData.model";
+import { dbConnection } from "../../configuration/postgres.connection";
+
+// import { FamilyData } from "../models/familyData.model";
+const FamilyData = dbConnection.dbModels.FamilyData;
+
 const create = (family: IfamilyData) => {
   return FamilyData.create(family);
 };

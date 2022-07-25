@@ -2,11 +2,11 @@ import { IDocuments } from "../types/documents.types";
 import { DocumentsData } from "../models/documents.model";
 import documentsRepo from "../controllers/documents.controller";
 import multer from "multer";
+import path from "path";
 
-const create = async (document: IDocuments) => {
-  const data = await documentsRepo.create(document);
+const create = async (documents:IDocuments) => {
+  const data = await documentsRepo.create(documents);
   return {
-    // ...StuentResponse[EStudentResponse.STUDENT_ADD_SUCCESS],
     data: data,
   };
 };
@@ -17,18 +17,23 @@ const getDocs = () => {
 const updateDocs = async (documents: IDocuments) => {
   return documentsRepo.updateDocs(documents);
 };
-const fileUpload = multer({
-  storage: multer.diskStorage({
-    // destination: function (req, file, cb) {
-    //   cb(null, "files/");
-    // },
-    destination: "./services",
-    filename: function (req, file, cb) {
-      cb(null, new Date().valueOf() + "_" + file.originalname);
-      console.log("syncceds");
-    },
-  }),
+
+var fileUpload = multer.diskStorage({
+  destination: "public/uploads",
+  filename: function (req, file, callback) {
+    callback(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + file.originalname
+    );
+  },
 });
+var uploadFiles = multer({ storage: fileUpload });
+var multipleUpload = uploadFiles.fields([
+  { name: "adharcardfront", maxCount: 1 },
+  { name: "adharcardback", maxCount: 1 },
+  { name: "medicalreportfront", maxCount: 1 },
+  { name: "medicalreportback", maxCount: 1 },
+]);
 const deleteDocs = (id: number) => documentsRepo.deletedocs(id);
 export default {
   create,
@@ -36,4 +41,5 @@ export default {
   updateDocs,
   deleteDocs,
   fileUpload,
+  multipleUpload,
 };

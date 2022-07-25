@@ -1,7 +1,8 @@
-const { DataTypes } = require("sequelize");
-import postgres from "../../configuration/postgres.connection";
+import { Sequelize } from "sequelize/types";
 
-export const FamilyData = postgres.define(
+const { DataTypes } = require("sequelize");
+
+export const FamilyData = (sequelize) => sequelize.define(
   "FamilyInfo",
   {
     id: {
@@ -43,4 +44,4 @@ export const FamilyData = postgres.define(
     timestamps: false,
   }
 );
-FamilyData.sync();
+// FamilyData.sync();

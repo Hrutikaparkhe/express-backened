@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
-import postgres from "../../configuration/postgres.connection";
-
-export const PersonalData = postgres.define(
+// import sequelize from "../../configuration/postgres.connection";
+import { User } from "./user.model";
+export const PersonalData =  (sequelize) => sequelize.define(
   "PersonalInfo",
   {
     id: {
@@ -51,4 +51,5 @@ export const PersonalData = postgres.define(
     timestamps: false,
   }
 );
-PersonalData.sync();
+// PersonalData.hasOne(User)
+// PersonalData.sync();

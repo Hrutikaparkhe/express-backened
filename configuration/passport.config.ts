@@ -3,17 +3,22 @@ import { Strategy } from "passport-local";
 import { Application } from "express";
 import userService from "../src/services/user.service";
 import userRepo from "../src/controllers/user.controller";
-import { User } from "../src/models/user.model";
+import { dbConnection } from './postgres.connection'
+// import { User } from "../src/models/user.model";
 import { Model } from "sequelize/types";
 // const { DataTypes } = require("sequelize");
 const LocalStrategy = require("passport-local").Strategy;
-
 export default (passport: any) => {
+console.log('>> dbConnection.sequelize', dbConnection.sequelize.models.User);
+const User = dbConnection.sequelize.models.User
+
  return  passport.use(
     new LocalStrategy({usernameField:'email'},function (email: string, password: string, done: any) {
       console.log("&&",password);
-
+      console.log('>> User.findByPk', User.findByPk);
+      console.log('>> email', email);
     return  User.findByPk(email).then((user: Model <{comparePassword: (password, cb)=> {}}> ) => {
+      console.log('>> user', user);
         if (!user) {
           return done(null, false);
         }
@@ -22,9 +27,11 @@ export default (passport: any) => {
           return done(null, userData);
         })
         
-      }).catch(err => console.error(err) )
+      }).catch(err => {
+        console.log('>> err', err)
+     } )
     })
-  );
+  )
 
   // passport.serializeUser((user: any, done) => {
   //   done(null, user.email);

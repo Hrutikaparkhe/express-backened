@@ -9,11 +9,13 @@ import router, { authenticateWithJWT } from "../src/routes/user.routes";
 import familyrouter from "../src/routes/familydata.routes";
 import personalRouter from "../src/routes/personalData.routes";
 import documentsRouter from "../src/routes/documents.routes";
+import loginRouter from "../src/routes/login.routes";
 export const registerMiddlewares = (app: Application) => {
   app.use(json());
 
   initPassport(passport);
-  app.use("/api/v1", authenticateWithJWT, router);
+  app.use("/api/v1",loginRouter)
+  app.use("/api/v1", router);
   app.use("/api/v1", authenticateWithJWT, familyrouter);
   app.use("/api/v1", authenticateWithJWT, personalRouter);
   app.use("/api/v1", authenticateWithJWT, documentsRouter);

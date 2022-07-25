@@ -1,4 +1,5 @@
-import { User } from "../src/models/user.model";
+import { dbConnection } from './postgres.connection'
+const User = dbConnection.dbModels.User
 import { Model } from "sequelize/types";
 // const { DataTypes } = require("sequelize");
 var JwtStrategy = require("passport-jwt").Strategy,

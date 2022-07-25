@@ -1,6 +1,7 @@
+
 const { DataTypes } = require("sequelize");
-import postgres from "../../configuration/postgres.connection";
-export const DocumentsData = postgres.define(
+
+export const DocumentsData = (sequelize) => sequelize.define(
   "DocumentsData",
   {
     id: {
@@ -8,7 +9,16 @@ export const DocumentsData = postgres.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    file: {
+    adharcardfront: {
+      type: DataTypes.STRING,
+    },
+    adharcardback: {
+      type: DataTypes.STRING,
+    },
+    medicalreportfront: {
+      type: DataTypes.STRING,
+    },
+    medicalreportback: {
       type: DataTypes.STRING,
     },
   },
@@ -17,4 +27,3 @@ export const DocumentsData = postgres.define(
     timestamps: false,
   }
 );
-DocumentsData.sync();

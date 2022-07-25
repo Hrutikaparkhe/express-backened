@@ -10,7 +10,6 @@ import { EUserResponse } from "../responses/user.response";
 const router = Router();
 
 router.get("/check", (req, res) => res.send({ msg: "log in successful" }));
-
 router.post("/register", async (req, res, next) => {
   try {
     const patient = req.body as IUser;
@@ -53,28 +52,28 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/login", (req, res) => {
-  passportConfig(passport).authenticate(
-    "local",
-    async function (err, userData) {
-      console.log(">> res", userData.dataValues);
-      try {
-        if (userData) {
-          console.log(getToken(userData.dataValues));
-          var token = getToken(userData.dataValues);
-          console.log(">> token", token);
-          await res.send({ token });
-        }
-      } catch (e) {
-        await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
-      }
-      // if (res) {
-      //   console.log(getToken(res.dataValues));
-      //   await res.send(new ResponseHandler(EUserResponse.LOGIN_SUCCESS));
-      // }
-    }
-  )(req, res);
-});
+// router.post("/login", (req, res) => {
+//   passportConfig(passport).authenticate(
+//     "local",
+//     async function (err, userData) {
+//       console.log(">> res", userData.dataValues);
+//       try {
+//         if (userData) {
+//           console.log(getToken(userData.dataValues));
+//           var token = getToken(userData.dataValues);
+//           console.log(">> token", token);
+//           await res.send({ token });
+//         }
+//       } catch (e) {
+//         await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
+//       }
+//       // if (res) {
+//       //   console.log(getToken(res.dataValues));
+//       //   await res.send(new ResponseHandler(EUserResponse.LOGIN_SUCCESS));
+//       // }
+//     }
+//   )(req, res);
+// });
 
 export const authenticateWithJWT = (req, res, callback) => {
   return passportJWTConfig(passport).authenticate("jwt", (err, user) => {
