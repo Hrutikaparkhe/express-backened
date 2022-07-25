@@ -7,12 +7,14 @@ import { EUserResponse } from "../responses/user.response";
 
 const documentsRouter = Router();
 documentsRouter.get("/file/:filename", (req, res) => {
-  const { filename } = req.params;
+  const { filename } = req.params
+console.log('>> filename', filename);
+  
   const dirname = path.resolve();
   const fullfilepath = path.join(dirname, "files/" + filename);
   res.sendFile(fullfilepath);
+  console.log('>> ful', fullfilepath);
 });
-
 documentsRouter.post("/file", documentsService.multipleUpload, (req, res) => {
   try {
     if (req.files) {

@@ -6,29 +6,37 @@ import userService from "../services/user.service";
 import { IUser, ICredentials } from "../types/user.types";
 import { getToken } from "../../utility/token";
 import passportJWTConfig from "../../configuration/passportJWT.config";
-import { EUserResponse } from "../responses/user.response";
+import { EUserResponse, UserResponse } from "../responses/user.response";
 const loginRouter = Router();
 
 loginRouter.post("/login", (req, res) => {
-    passportConfig(passport).authenticate(
-      "local",
-      async function (err, userData) {
-        console.log(">> res", userData);
-        try {
-          if (userData) {
-            console.log(getToken(userData.dataValues));
-            var token = getToken(userData.dataValues);
-            console.log(">> token", token);
-            await res.send({ token });
-          }
-        } catch (e) {
-          await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
+  passportConfig(passport).authenticate(
+    "local",
+    async function (err, userData) {
+      console.log(">> res", userData);
+      try {
+        if (userData) {
+          console.log(getToken(userData.dataValues));
+          var token = getToken(userData.dataValues);
+          console.log(">> token", token);
+          await res.send({ token });
         }
-        // if (res) {
-        //   console.log(getToken(res.dataValues));
-        //   await res.send(new ResponseHandler(EUserResponse.LOGIN_SUCCESS));
-        // }
+      } catch (e) {
+        await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
       }
-    )(req, res);
-  });
-  export default loginRouter
+    }
+  )(req, res);
+});
+loginRouter.post("/register", async (req, res, next) => {
+  try {
+    const patient = req.body as IUser;
+    console.log(patient);
+    const result = await userService.create(patient);
+    // res.send(new ResponseHandler(result));
+    throw UserResponse[EUserResponse.SIGNUP_SUCCESS];
+  } catch (e) {
+    console.log(e);
+    next(e);
+  }
+});
+export default loginRouter;

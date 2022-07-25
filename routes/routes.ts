@@ -15,7 +15,7 @@ export const registerMiddlewares = (app: Application) => {
 
   initPassport(passport);
   app.use("/api/v1",loginRouter)
-  app.use("/api/v1", router);
+  app.use("/api/v1", authenticateWithJWT,router);
   app.use("/api/v1", authenticateWithJWT, familyrouter);
   app.use("/api/v1", authenticateWithJWT, personalRouter);
   app.use("/api/v1", authenticateWithJWT, documentsRouter);

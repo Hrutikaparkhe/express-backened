@@ -1,6 +1,6 @@
 
-function addAssociation(Sequelize) {
-    const { User, FamilyInfo, PersonalInfo, DocumentsData }=Sequelize.models
+function addAssociation(sequelize) {
+    const { User, FamilyInfo, PersonalInfo, DocumentsData }=sequelize.models
     User.hasMany(FamilyInfo);
     FamilyInfo.belongsTo(User);
   

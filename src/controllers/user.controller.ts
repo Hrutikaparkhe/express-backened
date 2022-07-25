@@ -2,7 +2,7 @@
 import { IUser, ICredentials } from "../types/user.types";
 import { EUserResponse, UserResponse } from "../responses/user.response";
 import { dbConnection } from '../../configuration/postgres.connection'
-const User = dbConnection.sequelize.models.User
+const User = dbConnection.dbModels.User
 console.log('>> User', User);
 const create = (user: IUser) => {
   console.log('>> User', User);

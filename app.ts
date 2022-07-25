@@ -1,5 +1,5 @@
 import express, { application } from "express";
-import { connectToPostgres } from "./configuration/postgres.connection";
+import { dbConnection } from "./configuration/postgres.connection";
 import { registerMiddlewares } from "./routes/routes";
 import loginRouter from "./src/routes/login.routes";
 import router from "./src/routes/user.routes";
@@ -10,7 +10,7 @@ export const app = express();
 export const startServer = async () => {
   try {
     const PORT = process.env.PORT;
-    await connectToPostgres();
+    dbConnection.dbModels.sequelize.sync().then();
     await registerMiddlewares(app);
     app.listen(PORT, () => {
       console.log(`Server Started at ${PORT}`);
