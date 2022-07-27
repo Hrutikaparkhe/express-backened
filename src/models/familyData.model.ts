@@ -37,8 +37,8 @@ export const FamilyData = (sequelize) =>
       isBlood_pressure: {
         type: DataTypes.BOOLEAN,
       },
-      UserEmail: {
-        type: DataTypes.STRING,
+      UserId: {
+        type: DataTypes.INTEGER,
       },
     },
     {

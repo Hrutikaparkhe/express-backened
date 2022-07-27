@@ -21,7 +21,9 @@ export const DocumentsData = (sequelize) => sequelize.define(
     medicalreportback: {
       type: DataTypes.STRING,
     },
-   
+    UserId: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     tableName: "DocumentsData",

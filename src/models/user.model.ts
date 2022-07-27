@@ -5,16 +5,14 @@ export const User = (sequelize) => {
   const UserData = sequelize.define(
     "User",
     {
-      // userId: {
-      //   type: DataTypes.INTEGER,
-      // },
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
+        primaryKey: true,
       },
       email: {
         type: DataTypes.STRING,
-        primaryKey: true,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,
@@ -32,8 +30,12 @@ export const User = (sequelize) => {
   UserData.prototype.comparePassword = async function (password: string, cb) {
     console.log(password, this.password);
     var didMatch = await compare(password, this.password);
-    console.log(didMatch);
-    return cb(this);
+    console.log(">> didMatch", didMatch);
+    if (!didMatch) {
+      return cb(null);
+    } else {
+      return cb(this);
+    }
   };
 
   return UserData;

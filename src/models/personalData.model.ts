@@ -7,6 +7,7 @@ export const PersonalData = (sequelize) =>
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        unique: true
       },
       f_name: {
         type: DataTypes.STRING,
@@ -44,8 +45,8 @@ export const PersonalData = (sequelize) =>
       blood_pressure: {
         type: DataTypes.BOOLEAN,
       },
-      UserEmail: {
-        type: DataTypes.STRING,
+      UserId: {
+        type: DataTypes.INTEGER,
       },
     },
     {

@@ -23,30 +23,21 @@ dbModels.Sequelize = Sequelize;
 
 export const connectToPostgres = async () => {
   try {
-   
     return true;
   } catch (e) {
     console.log(e);
     throw { message: "COULD NOT CONNECT TO POSTGRES" };
   }
 };
-dbModels.DocumentsData =  DocumentsData(sequelize);
-dbModels.FamilyData =  FamilyData(sequelize);
-dbModels.PersonalData =  PersonalData(sequelize);
-dbModels.User =  User(sequelize);
+dbModels.DocumentsData = DocumentsData(sequelize);
+dbModels.FamilyData = FamilyData(sequelize);
+dbModels.PersonalData = PersonalData(sequelize);
+dbModels.User = User(sequelize);
 addAssociation(sequelize);
 //  syncModels(sequelize);
- sequelize.authenticate();
- dbModels.sequelize.sync().then(() => {
+sequelize.authenticate();
+dbModels.sequelize.sync().then(() => {
   console.log("POSTGRES CONNECTED SUCCESSFULLY");
 });
-// const syncModels = async (sequelize) => {
-//   const { DocumentsData, FamilyInfo, PersonalInfo, User } = sequelize.models;
-//   console.log(">> DocumentsData", DocumentsData);
-//   await DocumentsData.sync();
-//   await FamilyInfo.sync();
-//   await PersonalInfo.sync();
-//   await User.sync();
-// };
 
 export const dbConnection = { sequelize, dbModels };

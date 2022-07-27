@@ -17,7 +17,7 @@ export default (passport: any) => {
     new JwtStrategy(opts, function (jwt_payload: any, done: any) {
       console.log("&&", jwt_payload);
       
-      User.findByPk(jwt_payload.email).then((user) => {
+      User.findOne({where:{email:jwt_payload.email}}).then((user) => {
         if(user){
         return  done(null, user)        
         }

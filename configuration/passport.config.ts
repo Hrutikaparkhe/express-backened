@@ -1,34 +1,42 @@
-import { dbConnection } from './postgres.connection'
-// import { User } from "../src/models/user.model";
+import { dbConnection } from "./postgres.connection";
 import { Model } from "sequelize/types";
-// const { DataTypes } = require("sequelize");
 const LocalStrategy = require("passport-local").Strategy;
 export default (passport: any) => {
-  
-console.log('>> dbConnection.sequelize', dbConnection.sequelize.models.User);
-const User = dbConnection.sequelize.models.User
+  console.log(">> dbConnection.sequelize", dbConnection.sequelize.models.User);
+  const User = dbConnection.dbModels.User
 
- return  passport.use(
-    new LocalStrategy({usernameField:'email'},function (email: string, password: string, done: any) {
-      console.log("&&",password);
-      console.log('>> User.findByPk', User.findByPk);
-      console.log('>> email', email);
-      console.log('>> password', password);
-    return  User.findByPk(email).then((user: Model <{comparePassword: (password, cb)=> {}}> ) => {
-      console.log('>> user%', user);
-        if (!user) {
-          return done(null, false);
-        }
-        (user as any).comparePassword(password, (userData) => {
-          console.log('>> userData', userData);
-          return done(null, userData);
+  return passport.use(
+    new LocalStrategy({ usernameField: "email" }, function (
+      email: string,
+      password: string,
+      done: any
+    ) {
+      console.log("&&", password);
+      console.log(">> email", email);
+      console.log(">> password", password);
+      return User.findOne({where :{email : email}})
+        .then((user: Model<{ comparePassword: (password, cb) => {} }>) => {
+          console.log(">> user%", user);
+          if (!user) {
+            return done(null, false);
+          }
+          (user as any).comparePassword(password, (userData) => {
+            console.log(">> userData", userData);
+            if(!userData){
+              return done(null, null)
+            }
+           else{
+            return done(null, userData);
+           }
+           
+          });
         })
-        
-      }).catch(err => {
-        console.log('>> err', err)
-     } )
+     
+        .catch((err) => {
+          console.log(">> err", err);
+        });
     })
-  )
+  );
 
   // passport.serializeUser((user: any, done) => {
   //   done(null, user.email);

@@ -15,12 +15,16 @@ loginRouter.post("/login", (req, res) => {
     async function (err, userData) {
       console.log(">> res", userData);
       try {
+        console.log('>> userData.email', userData.email,userData.password);
         if (userData) {
           console.log(getToken(userData.dataValues));
           var token = getToken(userData.dataValues);
           console.log(">> token", token);
-          await res.send({ token });
+        return  res.send({ token });
         }
+         return res.send({
+          msg: "user not exist.Login Failed"
+         });
       } catch (e) {
         await res.send(new ResponseHandler(EUserResponse.LOGIN_FAILED));
       }
@@ -32,8 +36,8 @@ loginRouter.post("/register", async (req, res, next) => {
     const patient = req.body as IUser;
     console.log(patient);
     const result = await userService.create(patient);
-    // res.send(new ResponseHandler(result));
-    throw UserResponse[EUserResponse.SIGNUP_SUCCESS];
+    res.send(new ResponseHandler(result));
+  
   } catch (e) {
     console.log(e);
     next(e);

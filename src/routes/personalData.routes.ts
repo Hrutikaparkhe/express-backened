@@ -12,7 +12,6 @@ personalRouter.post("/registerpersonaldata", async (req, res, next) => {
     res.send(new ResponseHandler(result));
   } catch (e) {
     console.log(e);
-
     next(e);
   }
 });
@@ -41,6 +40,7 @@ personalRouter.delete("/deletepersonaldata/:id", async (req, res, next) => {
     const result = await personalDataService.deletePerson(Number(id));
     res.send(new ResponseHandler(result));
   } catch (e) {
+    throw e
     next(e);
   }
 });
