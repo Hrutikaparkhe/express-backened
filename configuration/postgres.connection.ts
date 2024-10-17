@@ -1,24 +1,43 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize } from "sequelize";
 const { DB_NAME, DB_HOST, DB_PASSWORD, DB_USERNAME } = process.env;
+import addAssociation from "../src/models/index.model";
+import { DocumentsData } from "../src/models/documents.model";
+import { FamilyData } from "../src/models/familyData.model";
+import { PersonalData } from "../src/models/personalData.model";
+import { User } from "../src/models/user.model";
 
-const postgres = new Sequelize(
-    DB_NAME as string,
-    DB_USERNAME as string,
-    DB_PASSWORD as string, {
+const sequelize = new Sequelize(
+  DB_NAME as string,
+  DB_USERNAME as string,
+  DB_PASSWORD as string,
+  {
     host: DB_HOST as string,
     port: 5432,
-    dialect: 'postgres'
-});
+    dialect: "postgres",
+  }
+);
+
+let dbModels: any = {};
+dbModels.sequelize = sequelize;
+dbModels.Sequelize = Sequelize;
 
 export const connectToPostgres = async () => {
-    try {
-        await postgres.authenticate();
-        console.log('POSTGRES CONNECTED SUCCESSFULLY');
+  try {
+    return true;
+  } catch (e) {
+    console.log(e);
+    throw { message: "COULD NOT CONNECT TO POSTGRES" };
+  }
+};
+dbModels.DocumentsData = DocumentsData(sequelize);
+dbModels.FamilyData = FamilyData(sequelize);
+dbModels.PersonalData = PersonalData(sequelize);
+dbModels.User = User(sequelize);
+addAssociation(sequelize);
+//  syncModels(sequelize);
+sequelize.authenticate();
+dbModels.sequelize.sync().then(() => {
+  console.log("POSTGRES CONNECTED SUCCESSFULLY");
+});
 
-        return true;
-    } catch (e) {
-        throw { message: 'COULD NOT CONNECT TO POSTGRES' }
-    }
-}
-
-export default postgres;
+export const dbConnection = { sequelize, dbModels };

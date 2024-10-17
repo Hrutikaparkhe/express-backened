@@ -1,6 +1,7 @@
 import { IPersonalInfo } from "../types/personalData.types";
-import { PersonalData } from "../models/personalData.model";
-
+// import { PersonalData } from "../models/personalData.model";
+import { dbConnection } from '../../configuration/postgres.connection'
+const PersonalData = dbConnection.dbModels.PersonalData
 const create = (person: IPersonalInfo) => {
   return PersonalData.create(person);
 };

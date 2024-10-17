@@ -1,28 +1,40 @@
-import { PassportStatic } from "passport";
-import { Strategy } from "passport-local";
-import { Application } from "express";
-import userService from "../src/services/user.service";
-import userRepo from "../src/controllers/user.controller";
-import { User } from "../src/models/user.model";
+import { dbConnection } from "./postgres.connection";
 import { Model } from "sequelize/types";
-// const { DataTypes } = require("sequelize");
 const LocalStrategy = require("passport-local").Strategy;
-
 export default (passport: any) => {
- return  passport.use(
-    new LocalStrategy({usernameField:'email'},function (email: string, password: string, done: any) {
-      console.log("&&",password);
+  console.log(">> dbConnection.sequelize", dbConnection.sequelize.models.User);
+  const User = dbConnection.dbModels.User
 
-    return  User.findByPk(email).then((user: Model <{comparePassword: (password, cb)=> {}}> ) => {
-        if (!user) {
-          return done(null, false);
-        }
-        (user as any).comparePassword(password, (userData) => {
-          console.log('>> userData', userData);
-          return done(null, userData);
+  return passport.use(
+    new LocalStrategy({ usernameField: "email" }, function (
+      email: string,
+      password: string,
+      done: any
+    ) {
+      console.log("&&", password);
+      console.log(">> email", email);
+      console.log(">> password", password);
+      return User.findOne({where :{email : email}})
+        .then((user: Model<{ comparePassword: (password, cb) => {} }>) => {
+          console.log(">> user%", user);
+          if (!user) {
+            return done(null, false);
+          }
+          (user as any).comparePassword(password, (userData) => {
+            console.log(">> userData", userData);
+            if(!userData){
+              return done(null, null)
+            }
+           else{
+            return done(null, userData);
+           }
+           
+          });
         })
-        
-      }).catch(err => console.error(err) )
+     
+        .catch((err) => {
+          console.log(">> err", err);
+        });
     })
   );
 

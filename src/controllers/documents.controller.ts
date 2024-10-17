@@ -1,7 +1,8 @@
 import { IDocuments } from "../types/documents.types";
-import { DocumentsData } from "../models/documents.model";
-const create = (family: IDocuments) => {
-  return DocumentsData.create(family);
+import { dbConnection } from '../../configuration/postgres.connection'
+const DocumentsData = dbConnection.dbModels.DocumentsData
+const create = (document:IDocuments) => {
+  return DocumentsData.create(document);
 };
 const getDocs = () => DocumentsData.findAll();
 const updateDocs = async (family: IDocuments) => {
